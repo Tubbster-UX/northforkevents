@@ -5,6 +5,7 @@ import RodeoEvents from './pages/RodeoEvents';
 import Results from './pages/results';
 import Home from './pages/home';
 import EventPage from './pages/EventPage';
+import PastRodeoEvents from './pages/PastRodeoEvents';
 import Footer from './components/footer';
 
 const App = () => {
@@ -15,11 +16,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<RodeoEvents />} />
+          <Route path="/past-events" element={<PastRodeoEvents />} />
           <Route path="/results" element={<Results />} />
           <Route path="/event/:eventId" element={<EventPage />} />
         </Routes>
+        <Footer />
       </Router>
-      <Footer />
     </div>
   );
 };

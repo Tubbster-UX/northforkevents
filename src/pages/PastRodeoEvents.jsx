@@ -4,7 +4,7 @@ import { EventCard } from '../components/event-card';
 import { Spin, Alert } from 'antd'; // Ant Design components
 import Pagination from '../components/pagination';
 
-const RodeoEvents = () => {
+const PastRodeoEvents = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -39,13 +39,13 @@ const RodeoEvents = () => {
                 };
             });
     
-            // Filter out past events
-            const futureEventsWithActivities = eventsWithActivities.filter(event => new Date(event.event_date) > new Date());
+            // Filter out future events
+            const pastEventsWithActivities = eventsWithActivities.filter(event => new Date(event.event_date) < new Date());
     
             // Sort events by date
-            futureEventsWithActivities.sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
+            pastEventsWithActivities.sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
     
-            setEvents(futureEventsWithActivities);
+            setEvents(pastEventsWithActivities);
         } catch (error) {
             setError(error.message);
         } finally {
@@ -64,7 +64,7 @@ const RodeoEvents = () => {
     return (
         <div className='pb-8'>
             {loading ? (
-                <div className='flex flex-col m-20 justify-center'>
+                <div className='min-h-96 flex flex-col m-20 justify-center'>
                 <Spin size="large" />
                 <p className="text-center">Loading events...</p>
                 </div>
@@ -72,17 +72,13 @@ const RodeoEvents = () => {
                 <Alert message={error} type="error" />
             ) : events.length === 0 ? (
                 <div className='min-h-96 flex flex-col m-20'>
-                <p className="text-center">No Events found.</p>
+                <p className="text-center">No past events found.</p>
                 </div>
             ) : (
                 <>
-<<<<<<< Updated upstream
-                    <div id='events' className="grid grid-cols-1 p-2 md:grid-cols-3 gap-4 mx-auto py-14 w-full h-full place-items-center">
-=======
                     <div id='events' className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto md:px-4 py-14 w-full h-full place-items-center">
->>>>>>> Stashed changes
                         {currentEvents.map((event, index) => (
-                            <EventCard event={event} />
+                            <EventCard event={event} className="w-full" />
                         ))}
                     </div>
                     <div className="flex justify-center mt-4">
@@ -100,4 +96,4 @@ const RodeoEvents = () => {
     );
 };
 
-export default RodeoEvents;
+export default PastRodeoEvents;

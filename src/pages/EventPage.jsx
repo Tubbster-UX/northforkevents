@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import supabase from '../utils/supabase';
 import SignupForm from '../components/signup-form';
+import ResultsPage from './results';
 
 const EventPage = () => {
     const { eventId } = useParams();
@@ -62,29 +63,33 @@ const EventPage = () => {
                     }
                 </p>
             </div>
-            <div className="flex justify-between mt-8">
-                <div className="w-1/2">
-                    <div className="mt-10">
-                        <h2 className="text-2xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">Activities:</h2>
-                        <ul className="mt-2 text-md text-gray-500">
-                            {activities.map(activity => (
-                                <li key={activity.activity_id}>{activity.activity_name} - ${activity.price}</li>
-                            ))}
-                        </ul>
+            {new Date(event.event_date) > new Date() ? (
+                <div className="flex flex-col lg:flex-row justify-between mt-8">
+                    <div className="w-full lg:w-1/2">
+                        <div className="mt-10">
+                            <h2 className="text-2xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">Activities:</h2>
+                            <ul className="mt-2 text-md text-gray-500">
+                                {activities.map(activity => (
+                                    <li key={activity.activity_id}>{activity.activity_name} {new Date(event.event_date) > new Date() && - activity.price }</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="mt-10">
+                            <h2 className="text-2xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">Sponsors:</h2>
+                            <ul className="mt-2 text-base text-gray-500">
+                                {sponsors.map(sponsor => (
+                                    <li key={sponsor.sponsor_id}>{sponsor.sponsor_name}</li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                    <div className="mt-10">
-                        <h2 className="text-2xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">Sponsors:</h2>
-                        <ul className="mt-2 text-base text-gray-500">
-                            {sponsors.map(sponsor => (
-                                <li key={sponsor.sponsor_id}>{sponsor.sponsor_name}</li>
-                            ))}
-                        </ul>
+                    <div className="w-full lg:w-1/2 mt-8">
+                        {new Date(event.event_date) > new Date() && <SignupForm activities={activities} />}
                     </div>
                 </div>
-                <div className="w-1/2">
-                    <SignupForm activities={activities} />
-                </div>
-            </div>
+            ) : (
+                <ResultsPage eventId={event.event_id} hideEventSelector="true" />
+            )}
         </div>
     );
 };
