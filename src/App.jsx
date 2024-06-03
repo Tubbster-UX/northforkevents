@@ -7,17 +7,23 @@ import Home from './pages/home';
 import EventPage from './pages/EventPage';
 import PastRodeoEvents from './pages/PastRodeoEvents';
 import Footer from './components/footer';
+import Contact from './pages/contact';
+import { Helmet } from 'react-helmet';
 
 const App = () => {
   return (
     <div>
+      <Helmet>
+        <title>NorthFork Events</title>
+      </Helmet>
       <Router>
-      <Navbar />
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<RodeoEvents />} />
           <Route path="/past-events" element={<PastRodeoEvents />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/event/:eventId" element={<EventPage />} />
         </Routes>
         <Footer />

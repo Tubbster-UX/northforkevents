@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import supabase from '../utils/supabase';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const SignupForm = ({ activities }) => {
     const [selectedActivity, setSelectedActivity] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');// assuming you have a supabaseClient.js file that exports your supabase client
+    const [phone, setPhone] = useState('');
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [captchaResponse, setCaptchaResponse] = useState(null);
 
+    const onCaptchaChange = (value) => {
+        setCaptchaResponse(value);
+    };
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!captchaResponse) {
+            console.log('Please verify the captcha');
+            return;
+        }
 
         // Insert into participants table
         let { data: participant, error } = await supabase
@@ -40,6 +51,7 @@ const SignupForm = ({ activities }) => {
         }
 
         console.log(`Signed up for activity: ${selectedActivity}`);
+        setIsSubmitted(true);
     };
 
     return (
@@ -80,10 +92,20 @@ const SignupForm = ({ activities }) => {
                     ))}
                 </select>
             </div>
+            <div className="mb-4">
+                <ReCAPTCHA
+                    sitekey="6Lfr_u8pAAAAAEubidwNDvRAqm9_eMqFCvjP3nDB"
+                    onChange={onCaptchaChange}
+                />
+            </div>
             <div className="flex items-center justify-between">
-                <button className="bg-red-500 hover:bg-red-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    Sign Up
-                </button>
+                {isSubmitted ? (
+                    <p className="bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >Submited You will be receiving an email with more information.</p>
+                ) : (
+                    <button className="bg-red-500 hover:bg-red-300 transition-colors text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                        Sign Up
+                    </button>
+                )}
             </div>
         </form>
     );

@@ -25,8 +25,6 @@ const Navbar = () => {
   const routes = [
     { path: "/events", title: "Rodeo Events" },
     { path: "/results", title: "Results" },
-    { path: "/schedule", title: "Schedule" },
-    { path: "/about-us", title: "About Us" },
     { path: "/contact", title: "Contact" },
   ];
 

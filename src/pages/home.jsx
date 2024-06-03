@@ -14,7 +14,9 @@ function Home() {
     const fetchEvents = async () => {
         let { data: events, error: eventsError } = await supabase
             .from('events')
-            .select('*');
+            .select('*')
+            .gte('event_date', new Date().toISOString())
+            .order('event_date', { ascending: true });
         console.log("Events: ", events);
         if (eventsError) console.log("Error: ", eventsError);
 
@@ -48,7 +50,7 @@ function Home() {
         <div>
             <Hero />
             <div
-              id='events'   className='bg-[url("/pattern.jpg")] h-full bg-no-repeat bg-center bg-cover p-5'
+                id='events' className='bg-[url("/pattern.jpg")] h-full bg-no-repeat bg-center bg-cover p-5'
             >
                 <div className='flex justify-center items-center flex-col'>
                     {/* Title */}

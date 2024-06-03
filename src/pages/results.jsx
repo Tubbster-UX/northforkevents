@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Select, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tab } from '@material-ui/core';
 import supabase from '../utils/supabase';
+import { Helmet } from 'react-helmet';
 
 function ResultsPage({ hideEventSelector = false, eventId }) {
     const [events, setEvents] = useState([]);
@@ -47,6 +48,9 @@ function ResultsPage({ hideEventSelector = false, eventId }) {
 
     return (
         <div className='h-screen p-8'>
+            <Helmet>
+                <title>NorthFork Events - Event Results</title>
+            </Helmet>
             <div className='flex flex-col md:flex-row'>
                 {!hideEventSelector && (
                     <div className='flex flex-col'>

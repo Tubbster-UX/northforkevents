@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import supabase from '@/utils/supabase';
 import { EventCard } from '../components/event-card';
-import { Spin, Alert } from 'antd'; // Ant Design components
+import { Alert } from 'antd'; // Ant Design components
 import Pagination from '../components/pagination';
+import { Helmet } from 'react-helmet';
 
 const PastRodeoEvents = () => {
     const [events, setEvents] = useState([]);
@@ -19,18 +20,19 @@ const PastRodeoEvents = () => {
         try {
             let { data: events, error: eventsError } = await supabase
                 .from('events')
-                .select('*');
+                .select('*')
+                .lte('event_date', new Date().toISOString())
+                .order('event_date', { ascending: false });
             if (eventsError) throw eventsError;
-    
+
             const eventIds = events.map(event => event.event_id);
-    
+
             let { data: activities, error: activitiesError } = await supabase
                 .from('activities')
                 .select('*')
                 .in('event_id', eventIds);
-    
             if (activitiesError) throw activitiesError;
-    
+
             const eventsWithActivities = events.map(event => {
                 const eventActivities = activities.filter(activity => activity.event_id === event.event_id);
                 return {
@@ -38,14 +40,8 @@ const PastRodeoEvents = () => {
                     activities: eventActivities
                 };
             });
-    
-            // Filter out future events
-            const pastEventsWithActivities = eventsWithActivities.filter(event => new Date(event.event_date) < new Date());
-    
-            // Sort events by date
-            pastEventsWithActivities.sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
-    
-            setEvents(pastEventsWithActivities);
+
+            setEvents(eventsWithActivities);
         } catch (error) {
             setError(error.message);
         } finally {
@@ -63,16 +59,19 @@ const PastRodeoEvents = () => {
 
     return (
         <div className='pb-8'>
+            <Helmet>
+                <title>NorthFork Events - Past Events</title>
+            </Helmet>
             {loading ? (
-                <div className='min-h-96 flex flex-col m-20 justify-center'>
-                <Spin size="large" />
-                <p className="text-center">Loading events...</p>
+                <div className='flex flex-col m-20 min-h-96 items-center justify-center'>
+                    <div className='loader' ></div>
+                    <p className="text-center pt-8">Loading events...</p>
                 </div>
             ) : error ? (
                 <Alert message={error} type="error" />
             ) : events.length === 0 ? (
                 <div className='min-h-96 flex flex-col m-20'>
-                <p className="text-center">No past events found.</p>
+                    <p className="text-center">No past events found.</p>
                 </div>
             ) : (
                 <>
