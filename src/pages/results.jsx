@@ -43,13 +43,15 @@ function ResultsPage() {
     };
 
     return (
-        <div>
-            <Select value={selectedEvent} onChange={handleEventChange}>
+        <div className='h-screen p-8'>
+            <label htmlFor="event-select">Select Event:</label>
+            <Select id="event-select" className='min-w-44 mr-8' value={selectedEvent} onChange={handleEventChange}>
                 {events.map((event) => (
                     <MenuItem value={event.event_id}>{event.event_name}</MenuItem>
                 ))}
             </Select>
-            <Select value={selectedActivity} onChange={handleActivityChange}>
+            <label htmlFor="activity-select">Select Activity:</label>
+            <Select id="activity-select" className='min-w-44' value={selectedActivity} onChange={handleActivityChange}>
                 {activities.map((activity) => (
                     <MenuItem value={activity.activity_id}>{activity.activity_name}</MenuItem>
                 ))}

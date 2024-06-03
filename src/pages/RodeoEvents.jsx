@@ -59,7 +59,7 @@ const RodeoEvents = () => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     return (
-        <div>
+        <div className='pb-8'>
             {loading ? (
                 <Spin size="large" />
             ) : error ? (
