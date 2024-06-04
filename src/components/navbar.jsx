@@ -7,8 +7,8 @@ const NavItem = ({ to, children }) => {
 
   return (
     <Link
-      to={to}
-      className={`block mt-4 lg:inline-block lg:mt-0 text-red-500 text-md hover:text-red-300 mr-6 ${isActive ? 'font-black' : ''}`}
+        to={to}
+        className={`block mt-4 lg:inline-block lg:mt-0 text-red-500 text-md hover:text-red-300 mr-6 ${isActive ? 'border-b-2 border-red-500 pb-1' : ''}`}
     >
       {children}
     </Link>
