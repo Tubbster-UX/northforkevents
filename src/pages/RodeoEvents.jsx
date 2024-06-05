@@ -65,7 +65,7 @@ const RodeoEvents = () => {
             {loading ? (
                 <div className='flex flex-col min-h-96 m-20 items-center justify-center'>
                     <div className='loader' ></div>
-                    <p className="text-center pt-8">Loading events...</p>
+                    <p className="text-center pt-8">Loading Upcoming Events...</p>
                 </div>
             ) : error ? (
                 <Alert message={error} type="error" />
@@ -75,7 +75,7 @@ const RodeoEvents = () => {
                 </div>
             ) : (
                 <>
-                    <div id='events' className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto md:px-4 py-14 w-full h-full place-items-center">
+                    <div id='events' className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto md:px-4 py-14 w-full h-full place-items-center">
                         {currentEvents.map((event, index) => (
                             <EventCard event={event} className="w-full" />
                         ))}

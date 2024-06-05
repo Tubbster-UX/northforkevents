@@ -14,7 +14,7 @@ const Footer = () => (
           <div className="flex flex-col">
             <span className="font-bold uppercase mt-4 md:mt-0 mb-2">Contact</span>
             <span className="my-2"><a href="mailto:derek@barbarv.com" className="text-red-500 text-md hover:text-red-300">Derek@barbarv.com</a></span>
-            <span className="my-2"><a href="tel:+1(605) 641-6269" className="text-red-500 text-md hover:text-red-300">(605) 641-6269</a></span>
+            <span className="my-2"><a href="tel:6056416237" className="text-red-500 text-md hover:text-red-300">(605) 641-6237</a></span>
           </div>
         </div>
       </div>
