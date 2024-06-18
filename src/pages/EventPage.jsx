@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import supabase from '../utils/supabase';
 import SignupForm from '../components/signup-form';
 import ResultsPage from './results';
@@ -42,12 +42,13 @@ const EventPage = () => {
     };
 
     const fetchSponsors = async () => {
-        let { data: sponsors, error } = await supabase
+        let { data: sponsordata, error } = await supabase
             .from('event_sponsors')
-            .select('sponsors(*)')
+            .select('*')
             .eq('event_id', eventId);
-
+        let { data: sponsors, error: sponsorError } = await supabase.from('sponsors').select('*').in('sponsor_id', sponsordata.map(sponsor => sponsor.sponsor_id));
         if (error) console.log("Error: ", error);
+        else if (sponsorError) console.log("Error: ", sponsorError);
         else setSponsors(sponsors);
     };
 
@@ -89,7 +90,15 @@ const EventPage = () => {
                             {sponsors.length > 0 ? (
                                 <ul className="mt-2 text-base text-gray-500">
                                     {sponsors.map(sponsor => (
-                                        <li key={sponsor.sponsor_id}>{sponsor.sponsor_name}</li>
+                                        <div key={sponsor.sponsor_id}>
+                                            <Link to={sponsor.url} className="">
+                                            <img
+                                                src={sponsor.logoUrl}
+                                                alt={sponsor.name}
+                                                className="w-1/2 h-auto cursor-pointer"
+                                            />
+                                            </Link>
+                                        </div>
                                     ))}
                                 </ul>
                             ) : (
